@@ -1,0 +1,73 @@
+---
+title: "Week 4 - Developing Data Products"
+author: "Chris Norris"
+date: "25 August 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Overview
+
+This is Week 4 of the Developing Data Products course from the Coursera Data Science Specialisation.
+
+My submission comprises two parts:
+
+- The Shiny Application found at https://nozzo.shinyapps.io/Popular_Equations/
+- The Reproducable Pitch Presentation which you are reading now.
+- All files are shown in Github at https://github.com/nozzo1/week4
+
+## How it works
+
+The interface asks you to select a formula in the side bar that you are interested in calculating a value for.
+You then enter two values which can be a side length or radius as Parameter 1 and another side length or height as Parameter 2.  
+  
+For example; A rectangle area calulation requires two side lengths whereas a cone volume requires a radius and height. There are default values of '10' for both intially.  
+  
+The application will automatically apply the two parameters to the formula chosen via the radio buttons.
+
+## Slide with R Output
+
+Converting formula to R is relatively easy.   
+Let's take the formula for the volume of a cone as an example:
+\[
+\begin{eqnarray}
+\frac{\mathbb{\pi}\times radius^2 \times height}{3}\\
+\end{eqnarray}
+\]
+
+So to take the example of a cone with radius of 10 and a height of 20 we write in R:
+
+```{r, echo = TRUE}
+answer <- ((3.1416 * (10)^2) * 20)/3
+print(answer)
+```
+
+## Formula selection mechanism
+
+For this simple example I chose to use the R switch command in conjunction with renderprint and the output from the input as inFormula. Now R has a list of formulas to apply the two parameters to which is piped back in to the output as 'oAnswer'.
+
+
+```
+output$oAnswer    <- renderPrint({switch(input$inFormula,
+ "Area - Rectangle" = (input$inParam1 * input$inParam2), 
+ "Area - Triangle" = ((input$inParam1 * input$inParam2)/2), 
+ "Volume - Pyramid" = ((input$inParam1 * input$inParam2)/3), 
+ "Volume - Cylinder" = ((3.1416 * (input$inParam1)^2) * input$inParam2), 
+ "Volume - Cone" = ((3.1416 * (input$inParam1)^2) * input$inParam2)/3 
+ )})
+```
+
+Although this works well it would not scale up beyond 20 or so. Therefore if I expand this in to the future I will store these in a data frame for switch selection.
+
+## Final
+
+Thank you for reading my presentation.   
+I hope you enjoy using my formula Shiny based application.   
+I look forward to your feedback.   
+   
+Thanks   
+Chris Norris   
+August 2017
